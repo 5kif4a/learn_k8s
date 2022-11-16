@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-volume-deployment
+spec:
+  volumes:
+    - name: nginx-volume
+      emptyDir: {}
+  containers:
+    - name: nginx-volume-deployment
+      image: nginx:alpine
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: nginx-volume
+      ports:
+        - containerPort: 80

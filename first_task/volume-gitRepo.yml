@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gitrepo-volume-pod
+spec:
+  initContainers:
+    - name: git-clone
+      image: alpine/git
+      args:
+        - clone
+        - --single-branch
+        - --
+        - https://github.com/Prashwarmishra/Doge-Studio.git
+        - /usr/share/nginx/html
+      volumeMounts:
+          - name: html
+            mountPath: /usr/share/nginx/html
+  containers:
+  - image: nginx:alpine
+    name: web-server
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html
+    ports:
+    - containerPort: 80
+      protocol: TCP
+  volumes:
+    - name: html
+      emptyDir: {}
